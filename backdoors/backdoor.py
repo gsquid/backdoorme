@@ -8,6 +8,8 @@ import subprocess
 import math
 
 class Backdoor(object, cmd.Cmd):
+    location = "~/"
+
     def __init__(self, core):
         self.options = {}
         self.core = core
@@ -58,6 +60,9 @@ class Backdoor(object, cmd.Cmd):
         if len(args) == 2 and args[0] in self.options:
             self.options[args[0].lower()].value = args[1]
             print(GOOD + "%s => %s" % (args[0], args[1]))
+        elif args[0] == "location":
+            Backdoor.location = args[1]
+            print(GOOD + "%s => %s" % (args[0], args[1])) 
         elif args[0] == "target":
             self.core.do_set(" ".join(args))
         elif len(args) != 2:
@@ -108,6 +113,7 @@ class Backdoor(object, cmd.Cmd):
         print "="*(l+45)
         for name, opt in options.iteritems():
             print(("{0:<15} {1:<%s} {2:<30}" % str(l)).format(opt.name, opt.value, opt.description))
+        print("location        " + Backdoor.location + "        location to move files")
 
     def do_help(self, args):
         if self.help_text != None and self.help_text != "":

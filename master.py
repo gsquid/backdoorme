@@ -42,6 +42,7 @@ class BackdoorMe(cmd.Cmd):
         print "Type \"addtarget\" to set a target, and \"open\" to open an SSH connection to that target."
         print "Using local IP of %s." % self.localIP
         self.addtarget("10.1.0.5", "student", "target123")
+        self.addtarget("192.168.70.132", "george", "password")
     
     def print_help(self, lst):
         it = iter(lst)

